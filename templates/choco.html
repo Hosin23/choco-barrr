@@ -1,0 +1,265 @@
+<html>
+
+<head>
+    <title>Chocolate Bar!</title>
+    <style>
+        body {
+            background-color: #eed6aa;
+            font-family: Arial, sans-serif;
+        }
+
+        form {
+            background-color: #f2e6d9;
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        form label {
+            color: #6e4223;
+        }
+
+        form > label > span {
+            width: 90px;
+            display: inline-block;
+        }
+
+        .form-row {
+            margin-bottom: 10px;
+        }
+
+        .form-row label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-row input,
+        .form-row select {
+            width: 200px;
+            padding: 8px;
+            border: 1px solid #b4804c;
+            border-radius: 4px;
+        }
+
+        .form-row .search-image {
+            margin-left: auto;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        table th,
+        table td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        table th {
+            background-color: #d4a066;
+            color: #fff;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f8f8f8;
+        }
+
+        table tfoot td {
+            padding-top: 20px;
+        }
+
+        button[type="submit"] {
+            margin-top: 10px;
+            background-color: #d4a066;
+            color: #fff;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        button[type="submit"]:hover {
+            background-color: #b4804c;
+        }
+
+        h1 {
+            color: #6e4223;
+        }
+
+        a {
+            color: #6e4223;
+            text-decoration: none;
+            margin-left: 4px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            padding: 8px;
+            border: 1px solid #b4804c;
+            border-radius: 4px;
+            width: 200px;
+            margin-right: 10px;
+        }
+
+        input[type="hidden"] {
+            display: none;
+        }
+
+    </style>
+</head>
+
+<body>
+    <form action="choco" method="get">
+        <div class="form-row">
+            <label>
+                <span>company:</span>
+                <input type="text" name="company" value="{{params['company']}}">
+            </label>
+            <label>
+                <span>company location:</span>
+                <input type="text" name="company_location" value="{{params['company_location']}}">
+            </label>
+        </div>
+        <div class="form-row">
+            <label>
+                <span>bean origin specific:</span>
+                <input type="text" name="bean_origin_specific" value="{{params['bean_origin_specific']}}">
+            </label>
+            <label>
+                <span>bean origin broad:</span>
+                <input type="text" name="bean_origin_broad" value="{{params['bean_origin_broad']}}">
+            </label>
+        </div>
+        <div class="form-row">
+            <label>
+                <span>review date from:</span>
+                <input type="number" name="date_gte" value="{{params['date_gte']}}">
+                <span>to:</span>
+                <input type="number" name="date_lte" value="{{params['date_lte']}}">
+            </label>
+            <label>
+                <span>cocoa percent min:</span>
+                <input type="number" name="cocoa_gte" value="{{params['cocoa_gte']}}">
+                <span>max:</span>
+                <input type="number" name="cocoa_lte" value="{{params['cocoa_lte']}}">
+            </label>
+            <img class="search-image" src="/static/bar.jpg" alt="Chocolate Bar">
+        </div>
+        <button type="submit">Chocolate!</button>
+    </form>
+
+    {% if result_count > 0 %}
+    <h1>{{result_count}} results</h1>
+    <table>
+        <thead>
+            <th>company</th>
+            <th>company location</th>
+            <th>specific origin</th>
+            <th>broad origin</th>
+            <th>
+                review year
+                {% if input_params['sort_by'] == 'review_date' %}
+                {% if input_params['sort_dir'] == 'asc' %}
+                <a href="/choco?company={{params['company']}}&company_location={{params['company_location']}}&bean_origin_specfic={{params['bean_origin_specfic']}}&bean_origin_broad={{params['bean_origin_broad']}}&date_gte={{params['date_gte']}}&date_lte={{params['date_lte']}}&cocoa_gte={{params['cocoa_gte']}}&cocoa_lte={{params['cocoa_lte']}}&sort_by=review_date&sort_dir={{get_sort_dir('review_date')}}">&#8593;</a>
+                {% else %}
+                <a href="/choco?company={{params['company']}}&company_location={{params['company_location']}}&bean_origin_specfic={{params['bean_origin_specfic']}}&bean_origin_broad={{params['bean_origin_broad']}}&date_gte={{params['date_gte']}}&date_lte={{params['date_lte']}}&cocoa_gte={{params['cocoa_gte']}}&cocoa_lte={{params['cocoa_lte']}}&sort_by=review_date&sort_dir={{get_sort_dir('review_date')}}">&#8595;</a>
+                {% endif %}
+                {% else %}
+                <a href="/choco?company={{params['company']}}&company_location={{params['company_location']}}&bean_origin_specfic={{params['bean_origin_specfic']}}&bean_origin_broad={{params['bean_origin_broad']}}&date_gte={{params['date_gte']}}&date_lte={{params['date_lte']}}&cocoa_gte={{params['cocoa_gte']}}&cocoa_lte={{params['cocoa_lte']}}&sort_by=review_date&sort_dir={{get_sort_dir('review_date')}}">-</a>
+                {% endif %}
+            </th>
+            <th>
+                cocoa percent
+                {% if input_params['sort_by'] == 'cocoa_percent' %}
+                {% if input_params['sort_dir'] == 'asc' %}
+                <a href="/choco?company={{params['company']}}&company_location={{params['company_location']}}&bean_origin_specfic={{params['bean_origin_specfic']}}&bean_origin_broad={{params['bean_origin_broad']}}&date_gte={{params['date_gte']}}&date_lte={{params['date_lte']}}&cocoa_gte={{params['cocoa_gte']}}&cocoa_lte={{params['cocoa_lte']}}&sort_by=cocoa_percent&sort_dir={{get_sort_dir('cocoa_percent')}}">&#8593;</a>
+                {% else %}
+                <a href="/choco?company={{params['company']}}&company_location={{params['company_location']}}&bean_origin_specfic={{params['bean_origin_specfic']}}&bean_origin_broad={{params['bean_origin_broad']}}&date_gte={{params['date_gte']}}&date_lte={{params['date_lte']}}&cocoa_gte={{params['cocoa_gte']}}&cocoa_lte={{params['cocoa_lte']}}&sort_by=cocoa_percent&sort_dir={{get_sort_dir('cocoa_percent')}}">&#8595;</a>
+                {% endif %}
+                {% else %}
+                <a href="/choco?company={{params['company']}}&company_location={{params['company_location']}}&bean_origin_specfic={{params['bean_origin_specfic']}}&bean_origin_broad={{params['bean_origin_broad']}}&date_gte={{params['date_gte']}}&date_lte={{params['date_lte']}}&cocoa_gte={{params['cocoa_gte']}}&cocoa_lte={{params['cocoa_lte']}}&sort_by=cocoa_percent&sort_dir={{get_sort_dir('cocoa_percent')}}">-</a>
+                {% endif %}
+            </th>
+            <th>
+                rating
+                {% if input_params['sort_by'] == 'rating' %}
+                {% if input_params['sort_dir'] == 'asc' %}
+                <a href="/choco?company={{params['company']}}&company_location={{params['company_location']}}&bean_origin_specfic={{params['bean_origin_specfic']}}&bean_origin_broad={{params['bean_origin_broad']}}&date_gte={{params['date_gte']}}&date_lte={{params['date_lte']}}&cocoa_gte={{params['cocoa_gte']}}&cocoa_lte={{params['cocoa_lte']}}&sort_by=rating&sort_dir={{get_sort_dir('rating')}}">&#8593;</a>
+                {% else %}
+                <a href="/choco?company={{params['company']}}&company_location={{params['company_location']}}&bean_origin_specfic={{params['bean_origin_specfic']}}&bean_origin_broad={{params['bean_origin_broad']}}&date_gte={{params['date_gte']}}&date_lte={{params['date_lte']}}&cocoa_gte={{params['cocoa_gte']}}&cocoa_lte={{params['cocoa_lte']}}&sort_by=rating&sort_dir={{get_sort_dir('rating')}}">&#8595;</a>
+                {% endif %}
+                {% else %}
+                <a href="/choco?company={{params['company']}}&company_location={{params['company_location']}}&bean_origin_specfic={{params['bean_origin_specfic']}}&bean_origin_broad={{params['bean_origin_broad']}}&date_gte={{params['date_gte']}}&date_lte={{params['date_lte']}}&cocoa_gte={{params['cocoa_gte']}}&cocoa_lte={{params['cocoa_lte']}}&sort_by=rating&sort_dir={{get_sort_dir('rating')}}">-</a>
+                {% endif %}
+            </th>
+            <th>bean type</th>
+        </thead>
+        <tbody>
+            {% for choco in chocos %}
+            <tr>
+                <td>{{choco.company}}</td>
+                <td>{{choco.company_location}}</td>
+                {% if choco.bean_origin_specfic == '??' %}
+                <td>Unknown</td>
+                {% else %}
+                <td>{{choco.bean_origin_specfic}}</td>
+                {% endif %}
+                {% if choco.bean_origin_broad == '??' %}
+                <td>Unknown</td>
+                {% else %}
+                <td>{{choco.bean_origin_broad}}</td>
+                {% endif %}
+                <td>{{choco.review_date}}</td>
+                <td>{{choco.cocoa_percent}}</td>
+                <td>{{choco.rating}}</td>
+                {% if choco.bean_type == '??' %}
+                <td>Unknown</td>
+                {% else %}
+                <td>{{choco.bean_type}}</td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="100%">
+                    <form action="choco" method="get">
+                        <span>page num:</span>
+                        <select name="page">
+                            {% for i in range(page_num) %}
+                            {% if (i + 1) == (input_params['page'] | int) %}
+                            <option value={{i+1}} selected="selected">{{i+1}}</option>
+                            {% else %}
+                            <option value={{i+1}}>{{i+1}}</option>
+                            {% endif %}
+                            {% endfor %}
+                        </select>
+                        <input type="hidden" name=company value="{{params['company']}}">
+                        <input type="hidden" name=company_location value="{{params['company_location']}}">
+                        <input type="hidden" name=bean_origin_specfic value="{{params['bean_origin_specfic']}}">
+                        <input type="hidden" name=bean_origin_broad value="{{params['bean_origin_broad']}}">
+                        <input type="hidden" name=date_gte value="{{params['date_gte']}}">
+                        <input type="hidden" name=date_lte value="{{params['date_lte']}}">
+                        <input type="hidden" name=cocoa_gte value="{{params['cocoa_gte']}}">
+                        <input type="hidden" name=cocoa_lte value="{{params['cocoa_lte']}}">
+                        <input type="hidden" name=sort_by value="{{params['sort_by']}}">
+                        <input type="hidden" name=sort_dir value="{{params['sort_dir']}}">
+                        <button type="submit">GO!</button>
+                    </form>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+        
+    
+    {% else %}
+    <h1>No results :(</h1>
+    {% endif %}
+
+</body>
